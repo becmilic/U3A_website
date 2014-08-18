@@ -28,31 +28,13 @@ public $components = array('Session',
 			
 			don't forget to add the <?php stuff
 		*/
-     	if($role == 'superuser') {
-			$this->set('is_superuser', true);
-		}
-     
-		else {
-			$this->set('is_superuser', false);
-		}
-		
-		// restrict to office volunteer...
-		if($role == 'officevolunteer') {
-			$this->set('is_officevolunteer', true);
-		}
-     
-		else {
-			$this->set('is_officevolunteer', false);
-		}
+        $this->set('is_superuser', $role == 'superuser');
 
-		// restrict to teaching staff..
-		if($role == 'teachingstaff') {
-			$this->set('is_teachingstaff', true);
-		}
-		
-		else {
-			$this->set('is_teachingstaff', false);
-		}
+        // restrict to office volunteer...
+        $this->set('is_officevolunteer', $role == 'officevolunteer');
+
+        // restrict to teaching staff..
+        $this->set('is_teachingstaff', $role == 'teachingstaff');
    	}
 	
 	public function isAuthorized($user) {
