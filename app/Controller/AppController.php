@@ -28,6 +28,7 @@ public $components = array('Session',
 			
 			don't forget to add the <?php stuff
 		*/
+        
         $this->set('is_superuser', $role == 'superuser');
 
         // restrict to office volunteer...
