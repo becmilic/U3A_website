@@ -12,6 +12,7 @@
 </head>
 
 <body>
+
 	<p></p>
 	<div id="tabcont" type="container">
 		<div id="tabs" align="left">
@@ -23,11 +24,20 @@
 					<?php
 					if($is_superuser) {
 						echo $this->Form->postLink(__('Delete Member'), array('action' => 'delete', $member['Member']['id']), 
-							null, __('Are you sure you want to delete # %s?', $member['Member']['id'])); 
+							null, __('Are you sure you want to delete # %s?', $member['Member']['id']));
 					} 
 					?>
 				</a></li>
 			</ul>
+            <div style="float:right">
+                <?php
+                if($is_superuser) {
+                    echo $this->Form->postLink(__('Reset Password'), array('controller'=>'users','action'=>'reset_password',
+                            $member['User'][0]['id']),null, 'Are you sure you want to reset the password for '.
+                        $member['Member']['member_gname'].' '.$member['Member']['member_fname'].'?');
+                }
+                ?>
+            </div>
 
 			<div id="tabs1";>
 				<div class="members index">
@@ -78,6 +88,7 @@
 							<td class="data"><?php echo h($member['Member']['member_mobile']); ?></td> 
 						</tr>
 					</table>
+
 				</div>
 			</div>
 

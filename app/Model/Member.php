@@ -106,15 +106,6 @@ class Member extends AppModel {
 		'User' => array(
 			'className' => 'User',
 			'foreignKey' => 'member_id',
-			'dependent' => false,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'exclusive' => '',
-			'finderQuery' => '',
-			'counterQuery' => ''
 		)
 	);
 

@@ -192,7 +192,8 @@ class User extends AppModel {
 		// fallback to our parent
 		return parent::beforeSave($options);
 	}
-	
+
+
 	/**
  	* belongsTo associations
  	*
@@ -202,9 +203,6 @@ class User extends AppModel {
 		'Member' => array(
 			'className' => 'Member',
 			'foreignKey' => 'member_id',
-			'conditions' => '',
-			'fields' => '',
-			'order' => ''
 		)
 	);
 }

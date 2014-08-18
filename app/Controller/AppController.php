@@ -5,10 +5,11 @@ App::uses('Controller', 'Controller');
 class AppController extends Controller {
 
 public $components = array('Session',
-	'Auth' => array('loginAction' => array('controller' => 'users','action' => 'login'),
-	'authError' => 'You must be logged in to view this page',
-	'loginError' => 'Invalid Username or Password entered, please try',
-	'authenticate' => array('Form' => array('fields' => array('username' => 'email')))
+	'Auth' => array(
+        'loginAction' => array('controller' => 'users','action' => 'login'),
+	    'authError' => 'You must be logged in to view this page',
+	    'loginError' => 'Invalid Username or Password entered, please try',
+	    'authenticate' => array('Form' => array('fields' => array('username' => 'email')))
     )
 );
 

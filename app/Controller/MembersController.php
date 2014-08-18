@@ -1,5 +1,6 @@
 <?php
 App::uses('AppController', 'Controller');
+
 /**
  * Members Controller
  *
@@ -117,8 +118,12 @@ class MembersController extends AppController {
 		if (!$this->Member->exists($id)) {
 			throw new NotFoundException(__('Invalid member'));
 		}
-		$options = array('conditions' => array('Member.' . $this->Member->primaryKey => $id));
-		$this->set('member', $this->Member->find('first', $options));
+
+        $member = $this->Member->find('first', array(
+            'conditions' => array('Member.' . $this->Member->primaryKey => $id),
+            'contain'=>array('User')
+        ));
+		$this->set('member', $member);
 	}
 
 /**
@@ -228,4 +233,9 @@ class MembersController extends AppController {
 		$options = array('conditions' => array('Member.' . $this->Member->primaryKey => $id));
 		$this->set('member', $this->Member->find('first', $options));
 	}
+
+
+
+
+
 }

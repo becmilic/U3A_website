@@ -1,4 +1,6 @@
 <?php
+App::uses('AppController', 'Controller');
+App::uses('CakeEmail', 'Network/Email');
 
 class UsersController extends AppController {
 
@@ -73,31 +75,28 @@ class UsersController extends AppController {
     }
 
     public function edit($id = null) {
+        if (!$this->User->exists($id)) {
+            $this->Session->setFlash('Invalid User ID Provided');
+            $this->redirect($this->referer());
+        }
+        $user = $this->User->findById($id);
 
-		    if (!$id) {
-				$this->Session->setFlash('Please provide a user id');
-				$this->redirect(array('action'=>'index'));
-			}
+        if ($this->request->is('post') || $this->request->is('put')) {
+            $this->User->id = $id;
+            if($this->request->data['User']['password'] == ''){
+                unset($this->request->data['User']['password']);
+            }
+            if ($this->User->save($this->request->data)) {
+                $this->Session->setFlash(__('The user has been updated'));
+                $this->redirect(array('action' => 'edit', $id));
+            }else{
+                $this->Session->setFlash(__('Unable to update your user.'));
+            }
+        }
 
-			$user = $this->User->findById($id);
-			if (!$user) {
-				$this->Session->setFlash('Invalid User ID Provided');
-				$this->redirect(array('action'=>'index'));
-			}
-
-			if ($this->request->is('post') || $this->request->is('put')) {
-				$this->User->id = $id;
-				if ($this->User->save($this->request->data)) {
-					$this->Session->setFlash(__('The user has been updated'));
-					$this->redirect(array('action' => 'edit', $id));
-				}else{
-					$this->Session->setFlash(__('Unable to update your user.'));
-				}
-			}
-
-			if (!$this->request->data) {
-				$this->request->data = $user;
-			}
+        if (!$this->request->data) {
+            $this->request->data = $user;
+        }
 		$members = $this->User->Member->find('list');
 		$this->set(compact('members'));
     }
@@ -142,6 +141,34 @@ class UsersController extends AppController {
         $this->Session->setFlash(__('User was not re-activated'));
         $this->redirect(array('action' => 'index'));
     }
-}
 
-?>
+
+    public function reset_password($id = null) {
+        if (!$this->User->exists($id)) {
+            throw new NotFoundException(__('Invalid member'));
+        }
+
+        //Reset the password
+        //Generate new password (hard code password first)
+        $newPassword = 'temp123';
+        //Save new password to member
+        $this->User->id = $id;
+        $this->User->saveField('password',$newPassword);
+
+        //Send email for reset password
+        $Email = new CakeEmail();
+        $Email->template('forgotten_password', 'default')
+            ->emailFormat('html')
+            ->to($this->User->field('email'))
+            ->from('no-reply@u3a.org.au')
+            ->viewVars(array('newPassword' => $newPassword))
+            ->send();
+
+        //set template, find the email address of the memeber
+        //Send email off
+        $this->Session->setFlash('Your password has been reset and sent you to your email address');
+        $this->redirect($this->referer());
+    }
+
+
+}
