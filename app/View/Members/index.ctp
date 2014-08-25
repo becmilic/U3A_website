@@ -7,6 +7,15 @@
     });
 </script>
 
+<script> //action script code for datatables in member view
+    //when the doucment is ready will perform the next function
+    $(document).ready(function(){
+        //takes the element from the table and applies the data table to it
+        $('#memberTable').dataTable();
+
+    });
+</script>
+
 
 <!-- if ($member['Member']['active'] == 1) -->
 <!-- <?php echo $this->Html->link(__('Add Member'), array('action' => 'add')); ?> -->
@@ -25,17 +34,21 @@
             <div class="members index">
                 <h2><?php echo __('All Members'); ?></h2>
 
-                <table id="table_id" cellpadding="0" cellspacing="0">
+                <table id="memberTable" cellpadding="0" cellspacing="0">
                     <thead>
                     <tr>
-                        <th><?php echo $this->Paginator->sort('member_gname', 'First Name'); ?></th>
-                        <th><?php echo $this->Paginator->sort('member_fname', 'Last Name'); ?></th>
-                        <th><?php echo $this->Paginator->sort('member_address', 'Address'); ?></th>
-                        <th><?php echo $this->Paginator->sort('member_email', 'Email'); ?></th>
-                        <th><?php echo $this->Paginator->sort('member_phone', 'Phone No.'); ?></th>
-                        <th><?php echo $this->Paginator->sort('member_mobile', 'Mobile No.'); ?></th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Address</th>
+                        <th>Email</th>
+                        <th>Phone No.</th>
+                        <th>Mobile No.</th>
                     </tr>
                     </thead>
+
+
+
+
                     <tbody>
                     <?php foreach ($members as $member):  {?>
                         <tr>
