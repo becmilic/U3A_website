@@ -1,3 +1,6 @@
+<?php echo $this->Html->script('jquery.dataTables');?>
+<?php echo $this->Html->css('jquery.dataTables');?>
+
 <div class="courseenrolments view">
 <h2><?php  echo __('Courseenrolment'); ?></h2>
 	<dl>

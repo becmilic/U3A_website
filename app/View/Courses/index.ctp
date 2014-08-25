@@ -1,10 +1,11 @@
 <?php echo $this->Html->script('jquery.dataTables');?>
 <?php echo $this->Html->css('jquery.dataTables');?>
 
-<script>
+
+<script> //action script code for datatables in course view
     //when the doucment is ready will perform the next function
     $(document).ready(function(){
-        //takes the element and applys the data table to it
+        //takes the element from the table and applies the data table to it
         $('#courseTable').dataTable();
 
     });
