@@ -1,3 +1,17 @@
+<?php echo $this->Html->script('jquery.dataTables');?>
+<?php echo $this->Html->css('jquery.dataTables');?>
+
+<script>
+
+    //when the doucment is ready will perform the next function
+    $(document).ready(function(){
+    //takes the element and applys the data table to it
+        $('#courseTable').dataTable();
+
+    });
+
+</script>
+
 <div class="courses view">
 <h2><?php  echo __('Course'); ?></h2>
 	<dl>
@@ -59,31 +73,28 @@
 <div class="related">
 	<h2><?php echo __('Related Coursefiles'); ?></h2>
 	<?php if (!empty($course['Coursefile'])): ?>
-	<table cellpadding = "0" cellspacing = "0">
-	<tr>
-		<th><?php echo __('Id'); ?></th>
-		<th><?php echo __('Course Id'); ?></th>
-		<th><?php echo __('Notes'); ?></th>
-		<th><?php echo __('Attachments'); ?></th>
-		<th class="actions"><?php echo __('Actions'); ?></th>
-	</tr>
-	<?php
-		$i = 0;
-		foreach ($course['Coursefile'] as $coursefile): ?>
-		<tr>
-			<td><?php echo $coursefile['id']; ?></td>
-			<td><?php echo $coursefile['course_id']; ?></td>
-			<td><?php echo $coursefile['notes']; ?></td>
-			<td><?php echo $coursefile['attachments']; ?></td>
-			<td class="actions">
-				<?php echo $this->Html->link(__('View'), array('controller' => 'coursefiles', 'action' => 'view', $coursefile['id'])); ?>
-				<?php echo $this->Html->link(__('Edit'), array('controller' => 'coursefiles', 'action' => 'edit', $coursefile['id'])); ?>
-				<?php echo $this->Form->postLink(__('Delete'), array('controller' => 'coursefiles', 'action' => 'delete', $coursefile['id']), null, __('Are you sure you want to delete # %s?', $coursefile['id'])); ?>
-			</td>
-		</tr>
-		<?php endforeach; ?>
-	<?php endif; ?>
-	</table>
+        <table id="courseTable" cellpadding = "0" cellspacing = "0">
+            <tr>
+                <th><?php echo __('Course Id'); ?></th>
+                <th><?php echo __('Notes'); ?></th>
+                <th><?php echo __('Attachments'); ?></th>
+                <th class="actions"><?php echo __('Actions'); ?></th>
+            </tr>
+            <?php
+            foreach ($course['Coursefile'] as $coursefile): ?>
+                <tr>
+                    <td><?php echo $coursefile['course_id']; ?></td>
+                    <td><?php echo $coursefile['notes']; ?></td>
+                    <td><?php echo $coursefile['attachments']; ?></td>
+                    <td class="actions">
+                        <?php echo $this->Html->link(__('View'), array('controller' => 'coursefiles', 'action' => 'view', $coursefile['id'])); ?>
+                        <?php echo $this->Html->link(__('Edit'), array('controller' => 'coursefiles', 'action' => 'edit', $coursefile['id'])); ?>
+                        <?php echo $this->Form->postLink(__('Delete'), array('controller' => 'coursefiles', 'action' => 'delete', $coursefile['id']), null, __('Are you sure you want to delete # %s?', $coursefile['id'])); ?>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </table>
+    <?php endif; ?>
 </div>
 
 <p></p>
