@@ -1,6 +1,5 @@
 <?php
 App::uses('AppController', 'Controller');
-
 /**
  * Members Controller
  *
@@ -118,12 +117,8 @@ class MembersController extends AppController {
 		if (!$this->Member->exists($id)) {
 			throw new NotFoundException(__('Invalid member'));
 		}
-
-        $member = $this->Member->find('first', array(
-            'conditions' => array('Member.' . $this->Member->primaryKey => $id),
-            'contain'=>array('User')
-        ));
-		$this->set('member', $member);
+		$options = array('conditions' => array('Member.' . $this->Member->primaryKey => $id));
+		$this->set('member', $this->Member->find('first', $options));
 	}
 
 /**
@@ -132,16 +127,45 @@ class MembersController extends AppController {
  * @return void
  */
 	public function add() {
-
 		if ($this->request->is('post')) {
 			debug($this->data);
 			$this->Member->create();
-			if ($this->Member->saveAll($this->request->data)) {
+			if ($this->Member->saveAssociated($this->request->data, array('atomic' => false, 'deep' => true))) {
 				$this->Session->setFlash(__('The member has been saved'));
-				$this->redirect(array('action' => 'index/'));
-			} else {
+				// $this->redirect(array('action' => 'add_account/', $last_insert_id = $this->Member->id));
+				$this->redirect(
+				    array(
+				          "controller" => "Members", 
+				          "action" => "add_account/",
+				          "?" => array(
+				              "id" => $this->Member->id,
+							  "email" => $this->Member->id
+				          ),
+				          $data_can_be_passed_here
+				    ),
+				    $status,
+				    $exit
+				);
+			} 
+			else {
 				$this->Session->setFlash(__('The member could not be saved. Please, try again.'));
 			}
+		}
+	}
+
+	public function add_account() {
+		if ($this->request->is('post')) {
+			debug($this->data);
+			$this->Member->User->create();
+			if ($this->Member->User->saveAssociated($this->request->data, array('atomic' => false, 'deep' => true))) {
+				$this->Session->setFlash(__('The user has been saved'));
+				$this->redirect(array('action' => 'index/'));
+			} 
+			else {
+				$this->Session->setFlash(__('The member could not be saved. Please, try again.'));
+			}
+			$members = $this->Member->find('list');
+			$this->set(compact('members'));
 		}
 	}
 
@@ -156,7 +180,6 @@ class MembersController extends AppController {
 		if (!$this->Member->exists($id)) {
 			throw new NotFoundException(__('Invalid member'));
 		}
-
 
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->Member->save($this->request->data)) {
@@ -233,9 +256,4 @@ class MembersController extends AppController {
 		$options = array('conditions' => array('Member.' . $this->Member->primaryKey => $id));
 		$this->set('member', $this->Member->find('first', $options));
 	}
-
-
-
-
-
 }
