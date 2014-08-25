@@ -15,8 +15,16 @@ public $components = array('Session',
 
 	public function beforeFilter() {
         $this->Auth->allow('login');
-		
-		$role = $this->Auth->User('role'); // define user role
+
+        $user = $this->Auth->user();
+        $this->set('user',$user);
+
+        $this->loadModel('Member');
+        $member = $this->Member->find('first',array(
+            'conditions'=>array('Member.id'=>$this->Auth->User('member_id')),
+            'contain'=>array()
+        ));
+        $this->set('currentMember',$member);
 
 		// restrict to super user...
 		/*
@@ -30,13 +38,13 @@ public $components = array('Session',
 			don't forget to add the <?php stuff
 		*/
         
-        $this->set('is_superuser', $role == 'superuser');
+        $this->set('is_superuser', $user['role'] == 'superuser');
 
         // restrict to office volunteer...
-        $this->set('is_officevolunteer', $role == 'officevolunteer');
+        $this->set('is_officevolunteer', $user['role'] == 'officevolunteer');
 
         // restrict to teaching staff..
-        $this->set('is_teachingstaff', $role == 'teachingstaff');
+        $this->set('is_teachingstaff', $user['role'] == 'teachingstaff');
    	}
 	
 	public function isAuthorized($user) {
