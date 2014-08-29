@@ -47,24 +47,24 @@
 <td class="data"><?php echo $this->Form->input('member_mobile', array('disabled' => 'disabled')); ?></td> 
 </tr>
 </table>
-	
 
 	<?php
 		// this gets saved
-	echo $this->Form->hidden('id');
-	echo $this->Form->hidden('member_gname');
-	echo $this->Form->hidden('member_mname');
-	echo $this->Form->hidden('member_fname');
-	echo $this->Form->hidden('member_address');
-	echo $this->Form->hidden('member_postcode');
-	echo $this->Form->hidden('member_email');
-	echo $this->Form->hidden('member_phone');
-	echo $this->Form->hidden('member_mobile');
-	echo $this->Form->hidden('active', array('value' => '1'));
+		echo $this->Form->hidden('id');
+		echo $this->Form->hidden('member_gname');
+		echo $this->Form->hidden('member_mname');
+		echo $this->Form->hidden('member_fname');
+		echo $this->Form->hidden('member_address');
+		echo $this->Form->hidden('member_postcode');
+		echo $this->Form->hidden('member_email');
+		echo $this->Form->hidden('member_phone');
+		echo $this->Form->hidden('member_mobile');
+		echo $this->Form->hidden('active', array('value' => '1'));
 	?>
 
 	<div id="submitButtons">
 		<button type="submit">Activate <?php echo $this->Form->end(); ?></button>
+		<button><?php echo $this->Html->link(__('Back'), array('action' => 'index')); ?></button>
 	</div>
 </div>
 
