@@ -53,7 +53,6 @@
 
 	<div id="submitButtons">
 		<button type="Submit">Confirm Edit <?php echo $this->Form->end(); ?></button>
-		<button><?php echo $this->Html->link('Back', array('controller' => 'members', 'action' => 'index')); ?></button>
+		<button><?php echo $this->Html->link('Back', array('controller' => 'members', 'action' => 'detailed/' . $member['Member']['id']));?></button>
 	</div>
 </div>
-
