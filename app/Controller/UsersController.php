@@ -101,7 +101,6 @@ class UsersController extends AppController {
 		$this->set(compact('members'));
     }
 
-    public function delete($id = null) {
     /* public function delete($id = null) {
 		
 		if (!$id) {
