@@ -1,7 +1,7 @@
 <!-- app/View/Users/add.ctp -->
 <div class="users form">
 
-<?php echo $this->Form->create('User', array('novalidate' => true));?>
+<?php echo $this->Form->create('User', array('enctype' => 'multipart/form-data', 'novalidate' => true));?>
     <fieldset>
         <legend><?php echo __('Add User'); ?></legend>
         <?php
@@ -9,14 +9,14 @@
 			    'label' => 'Member',
 			    'empty' => '-- Select an Active Member --'
 			));
-			echo $this->Form->input('username');
 			echo $this->Form->input('email');
 		    echo $this->Form->input('password');
 			echo $this->Form->input('password_confirm', 
 				array('label' => 'Confirm Password', 'maxLength' => 255, 'title' => 'Confirm password', 'type'=>'password')
 			);
 	        echo $this->Form->input('role', 
-	        	array('options' => array('officevolunteer' => 'Office Volunteer', 'member' => 'Member', 'teachingstaff' => 'Teaching Staff')
+	        	array('options' => array('member' => 'Member', 'teachingstaff' => 'Teaching Staff', 
+	        							 'officevolunteer' => 'Office Volunteer', 'superuser' => 'Super User')
 	        ));
 		?>
     </fieldset>
@@ -28,11 +28,13 @@
 </div>
 
 <div class="actions">
-	<h2><?php echo __('Actions'); ?></h2>
 	<ul>
 		<li>
 			<?php 
-                if($this->Session->check('Auth.User')){
+                if($this->Session->check('Auth.User')) {
+            ?>
+            	<h2><?php echo __('Actions'); ?></h2>
+            <?php
 		            echo $this->Html->link("List Users", array('action'=>'index')); 
 		            echo "<br>";
                 }

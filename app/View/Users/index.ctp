@@ -2,9 +2,7 @@
 	<h2><?php echo __('Users'); ?></h2>
 	<table cellpadding="0" cellspacing="0">
 	<tr>
-			<th><?php echo $this->Paginator->sort('id', 'User ID'); ?></th>
 			<th><?php echo $this->Paginator->sort('member_id', 'Member'); ?></th>
-			<th><?php echo $this->Paginator->sort('username', 'Username'); ?></th>
 			<th><?php echo $this->Paginator->sort('password', 'Password'); ?></th>
 			<th><?php echo $this->Paginator->sort('role', 'Role'); ?></th>
 			<th><?php echo $this->Paginator->sort('created', 'Date Created'); ?></th>
@@ -13,11 +11,9 @@
 	</tr>
 	<?php foreach ($users as $user): ?>
 	<tr>
-		<td><?php echo h($user['User']['id']); ?>&nbsp;</td>
 		<td>
-			<?php echo $this->Html->link($user['Member']['memberName'], array('controller' => 'members', 'action' => 'view', $user['Member']['id'])); ?>
+			<?php echo $this->Html->link($user['Member']['memberName'], array('controller' => 'members', 'action' => 'detailed', $user['Member']['id'])); ?>
 		</td>
-		<td><?php echo h($user['User']['username']); ?>&nbsp;</td>
 		<td><?php echo h($user['User']['password']); ?>&nbsp;</td>
 		<td><?php echo h($user['User']['role']); ?>&nbsp;</td>
 		<td><?php echo h($user['User']['created']); ?>&nbsp;</td>
@@ -29,9 +25,11 @@
 				if($is_superuser)
 				{
 					echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $user['User']['id']), 
-					null, __('Are you sure you want to delete # %s?', $user['User']['id'])); 
+					null, __('Are you sure you want to delete: %s?', 
+						$user['Member']['member_gname']." ".$user['Member']['member_mname']." ".$user['Member']['member_fname']."'s account")); 
 				}
 			?>
+
 
 		</td>
 	</tr>
