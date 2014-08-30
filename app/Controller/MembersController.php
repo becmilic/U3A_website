@@ -12,6 +12,7 @@ class MembersController extends AppController {
         $this->Auth->allow('login','add'); 
     }
 
+
 /**
  * index method
  *
@@ -96,7 +97,7 @@ class MembersController extends AppController {
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->Member->save($this->request->data)) {
 				$this->Session->setFlash(__('The member has been activated'));
-				$this->redirect(array('action' => 'index'));
+				$this->redirect(array('action' => 'detailed',$id));
 			} else {
 				$this->Session->setFlash(__('The member could not be activated. Please, try again.'));
 			}
@@ -130,16 +131,15 @@ class MembersController extends AppController {
 		if ($this->request->is('post')) {
 			debug($this->data);
 			$this->Member->create();
-			if ($this->Member->saveAssociated($this->request->data, array('atomic' => false, 'deep' => true))) {
+			
+			if ($this->Member->save($this->request->data)) {
 				$this->Session->setFlash(__('The member has been saved'));
-				// $this->redirect(array('action' => 'add_account/', $last_insert_id = $this->Member->id));
 				$this->redirect(
 				    array(
 				          "controller" => "Members", 
 				          "action" => "add_account/",
 				          "?" => array(
-				              "id" => $this->Member->id,
-							  "email" => $this->Member->id
+				              "id" => $this->Member->id
 				          ),
 				          $data_can_be_passed_here
 				    ),
@@ -154,6 +154,7 @@ class MembersController extends AppController {
 	}
 
 	public function add_account() {
+		$this->set('members', $this->paginate());
 		if ($this->request->is('post')) {
 			debug($this->data);
 			$this->Member->User->create();
@@ -180,11 +181,11 @@ class MembersController extends AppController {
 		if (!$this->Member->exists($id)) {
 			throw new NotFoundException(__('Invalid member'));
 		}
-
+		
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->Member->save($this->request->data)) {
 				$this->Session->setFlash(__('Member updated!'));
-				$this->redirect(array('action' => 'index'));
+				$this->redirect(array('action' => 'detailed/' . $id));
 			} else {
 				$this->Session->setFlash(__('The member could not be saved. Please, try again.'));
 			}
@@ -193,6 +194,7 @@ class MembersController extends AppController {
 			$options = array('conditions' => array('Member.' . $this->Member->primaryKey => $id));
 			$this->request->data = $this->Member->find('first', $options);
 		}
+		$this->set('member', $this->Member->find('first', $options));
 	}
 
 /**
@@ -229,18 +231,22 @@ class MembersController extends AppController {
 		if (!$this->Member->exists($id)) {
 			throw new NotFoundException(__('Invalid member'));
 		}
+		
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->Member->save($this->request->data)) {
-				$this->Session->setFlash(__('Your profile has been updated'));
-				$this->redirect(array('action' => 'view_profile'));
+				$this->Session->setFlash(__('Member updated!'));
+				$this->redirect(array('action' => 'view_profile/' . $id));
 			} else {
-				$this->Session->setFlash(__('Profile changes could not be saved. Please try again.'));
+				$this->Session->setFlash(__('The member could not be saved. Please, try again.'));
 			}
+
 		} else {
 			$options = array('conditions' => array('Member.' . $this->Member->primaryKey => $id));
 			$this->request->data = $this->Member->find('first', $options);
 		}
+		$this->set('member', $this->Member->find('first', $options));
 	}
+
 
 	/**
  * view member profile method
